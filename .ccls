@@ -1,4 +1,5 @@
 g++
 -std=c++17
--I./lib
--I./core
+-I./third-party/cppjson/src
+-I./third-party/netcore/core
+-I./third-party/netcore/lib
