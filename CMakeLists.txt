@@ -17,6 +17,8 @@ set(SERVER_SRCS main.cpp)
 # 并将名称保存到 DIR_SRCS 变量
 set(USER_CONFIG_PATH ${CMAKE_CURRENT_SOURCE_DIR}/__user_config.hpp)
 
+
+set(NOT_ADD_NETCORE_TESTS 1)
 add_subdirectory(./third-party/netcore/)
 
 # 得到mysql的lib的配置
@@ -25,8 +27,8 @@ execute_process(COMMAND mysql_config --cflags
 execute_process(COMMAND mysql_config --libs
     OUTPUT_VARIABLE MYSQL_LIBS OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-#include_directories(./third-party/netcore/core)
-#include_directories(./third-party/netcore/lib)
+include_directories(./third-party/netcore/core)
+include_directories(./third-party/netcore/lib)
 add_executable(server ${SERVER_SRCS})
 
 
