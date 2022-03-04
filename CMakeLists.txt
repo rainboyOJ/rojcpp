@@ -29,6 +29,7 @@ execute_process(COMMAND mysql_config --libs
 
 include_directories(./third-party/netcore/core)
 include_directories(./third-party/netcore/lib)
+include_directories(./third-party/cppjson/src)
 add_executable(server ${SERVER_SRCS})
 
 
