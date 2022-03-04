@@ -1,0 +1,6 @@
+[submodule "third-party/netcore"]
+	path = third-party/netcore
+	url = https://github.com/rainboyOJ/netcore
+[submodule "third-party/cppjson"]
+	path = third-party/cppjson
+	url = https://github.com/rainboyOJ/cppjson
