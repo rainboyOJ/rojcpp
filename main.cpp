@@ -2,7 +2,7 @@
 #include "websocket_manager.h"
 #include "sqlpool.hpp"
 
-#include "userEntity.hpp"
+#include "__Entity__.hpp"
 
 using namespace rojcpp;
 rojcpp::http_server_ Server;
@@ -20,6 +20,7 @@ int main(){
     //std::cout << "error.leng " << error.length() << std::endl;
     
     cppjson::Serializable::Regist<userRegistJson>();//注册
+    cppjson::Serializable::Regist<MsgEntity>();//注册
 
 
     Server.set_http_handler<GET>("/helloworld",[](request & req,response & res){
@@ -43,9 +44,23 @@ int main(){
                 //std::cout << e << std::endl;
             //}
             sqlUserTable table(userJson);
-            table.Insert(pool.get());
+            try {
+                table.Insert(pool.get());
+            }
+            catch(std::exception & e){
 
-            res.set_status_and_content(status_type::ok,std::string(req.body()),req_content_type::string);
+                MsgEntity err(-1,e.what());
+                std::cerr << " Exception : " << e.what() << "\n";
+                res.set_status_and_content(status_type::ok,
+                        cppjson::Serializable::dumps(err)
+                        ,req_content_type::json);
+                return;
+            }
+
+            MsgEntity ok(0,"ok");
+            res.set_status_and_content(status_type::ok,
+                    cppjson::Serializable::dumps(ok)
+                    ,req_content_type::json);
     });
 
     Server.run();
