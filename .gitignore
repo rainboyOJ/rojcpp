@@ -39,3 +39,4 @@ coredump.*
 www/
 
 build/
+1.cpp

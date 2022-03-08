@@ -28,9 +28,11 @@ struct __config__{
     static constexpr int trigMode        = 0; // 暂时不能运行在ET模式,工作在LT模式
     static constexpr int timeoutMS       = 3*60*1000; //3分钟
     static constexpr bool OptLinger      = true; //优雅的关闭socket
+
+    static constexpr const char* sqlServer = "127.0.0.1";
     static constexpr int sqlPort         = 3306;
     static constexpr const char* sqlUser = "root";
-    static constexpr const  char* sqlPwd = "root";
+    static constexpr const char* sqlPwd = "root";
     static constexpr const char* dbName  = "rojcpp";
     static constexpr int connPoolNum     = 4;
     static constexpr int threadNum       = 4;

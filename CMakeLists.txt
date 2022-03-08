@@ -30,7 +30,23 @@ execute_process(COMMAND mysql_config --libs
 include_directories(./third-party/netcore/core)
 include_directories(./third-party/netcore/lib)
 include_directories(./third-party/cppjson/src)
+include_directories(./third-party/sqlpoolcpp/sqlconn)
+include_directories(./lib)
+
+
+
+if(EXISTS ${USER_CONFIG_PATH})
+    message(STATUS "使用用户的配置文件 ${USER_CONFIG_PATH}")
+    add_definitions(-D USER_CONFIG)
+    add_compile_options(-include ${USER_CONFIG_PATH})
+else()
+    message(STATUS "使用默认配置文件 ${PROJECT_SOURCE_DIR}/__default_config.hpp")
+endif(EXISTS ${USER_CONFIG_PATH})
+
+
 add_executable(server ${SERVER_SRCS})
+
+
 
 
 # 添加库

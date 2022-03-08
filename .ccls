@@ -3,3 +3,5 @@ g++
 -I./third-party/cppjson/src
 -I./third-party/netcore/core
 -I./third-party/netcore/lib
+-I./third-party/sqlpoolcpp/sqlconn
+-I./lib
