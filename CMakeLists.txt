@@ -32,6 +32,7 @@ include_directories(./third-party/netcore/lib)
 include_directories(./third-party/cppjson/src)
 include_directories(./third-party/sqlpoolcpp/sqlconn)
 include_directories(./lib)
+include_directories(./jsonEntity)
 
 
 

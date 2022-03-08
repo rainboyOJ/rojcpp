@@ -5,3 +5,4 @@ g++
 -I./third-party/netcore/lib
 -I./third-party/sqlpoolcpp/sqlconn
 -I./lib
+-I./jsonEntity
