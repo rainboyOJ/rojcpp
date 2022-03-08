@@ -35,6 +35,16 @@ int main(){
             std::cout << userJson.username << std::endl;
             std::cout << userJson.nickname << std::endl;
             std::cout << userJson.password<< std::endl;
+            SqlPoolRAII pool;
+            std::cout << "pool id "  << pool->getPoolId() << std::endl;
+            //std::string error;
+            //auto query_res = pool->infoQuery("show tables", error);
+            //for (const auto& e : query_res) {
+                //std::cout << e << std::endl;
+            //}
+            sqlUserTable table(userJson);
+            table.Insert(pool.get());
+
             res.set_status_and_content(status_type::ok,std::string(req.body()),req_content_type::string);
     });
 
