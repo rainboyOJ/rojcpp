@@ -56,10 +56,25 @@ static void user_login(request & req,response & res){
     auto userJson = cppjson::Serializable::loads<userRegistJson>(
             std::string(req.body())
             );//注册
+    //1 检查是否登录
+    auto weakptr = req.get_session();
+    if( weakptr.lock() ){
+        auto share_ptr = weakptr.lock();
+        if( share_ptr->get_data<bool>("logined") == true ){
+            MsgEntity ok(-1,"already logined!");
+            res.set_status_and_content(status_type::ok,
+                    ok.dumps()
+                    ,req_content_type::json);
+        }
+    }
+
+
     SqlPoolRAII pool;
     sqlUserTable table(userJson);
     auto exits = table.Select(pool.get());
     if( exits ){
+        auto session = res.start_session();
+        session->set_data("logined", true);
         MsgEntity ok(0,"login success");
         res.set_status_and_content(status_type::ok,
                 ok.dumps()
