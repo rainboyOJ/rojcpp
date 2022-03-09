@@ -24,4 +24,12 @@ struct MsgEntity {
 
         return config;
     }
+
+    std::string dumps(){
+        std::ostringstream oss;
+        oss << "{ \"code\": ";
+        oss << code << ", \"msg\": ";
+        oss << '"' << msg << '"' << "}";
+        return oss.str();
+    }
 };

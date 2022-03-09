@@ -89,7 +89,19 @@ struct sqlUserTable {
     }
     void Delete(); //删除
     void Update();
-    void Select(); //查询
+
+    //查询
+    bool Select(SQLConnection * conn){
+        std::ostringstream oss;
+        oss << "select count(*) from  users where password = '";
+        oss << password;
+        oss << "' and username  = '";
+        oss << username << "';";
+        std::string error;
+        auto res = conn->infoQuery(oss.str(), error);
+        std::cout << "===isValid" << std::endl;
+        return res[0] != "0";
+    } 
 
     //验证
     void isValid(SQLConnection * conn){
