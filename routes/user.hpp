@@ -88,10 +88,31 @@ static void user_login(request & req,response & res){
     }
 }
 
+/**
+ * method: GET
+ * url: /usr/logout
+ * 注销登录
+ */
+static void user_logout(request & req,response & res){
+    auto weakptr = req.get_session();
+    if( weakptr.lock() ){
+        auto share_ptr = weakptr.lock();
+        if( share_ptr->get_data<bool>("logined") == true ){
+            share_ptr->set_data("logined", false);
+        }
+    }
+
+    MsgEntity ret(0,"logout succ");
+    res.set_status_and_content(status_type::ok,
+            ret.dumps()
+            ,req_content_type::json);
+}
+
 
 static void regist(rojcpp::http_server_ & http_server){
     http_server.set_http_handler<POST>("/user/register",user_register);
     http_server.set_http_handler<POST>("/user/login",user_login);
+    http_server.set_http_handler<GET>("/user/logout",user_logout);
 }
 
 
