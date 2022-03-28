@@ -10,3 +10,6 @@
 [submodule "third-party/judgercpp"]
 	path = third-party/judgercpp
 	url = https://github.com/rainboyOJ/judgercpp
+[submodule "third-party/redisConnectPool"]
+	path = third-party/redisConnectPool
+	url = https://github.com/rainboyOJ/redisConnectPool
