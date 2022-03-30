@@ -20,8 +20,11 @@ int main(){
     //conn->infoQuery(query,error);
     //std::cout << "error.leng " << error.length() << std::endl;
     
-    cppjson::Serializable::Regist<userRegistJson>();//注册
-    cppjson::Serializable::Regist<MsgEntity>();//注册
+    cppjson::Serializable::Regist<userRegistJson>();//注册 用户的json
+    cppjson::Serializable::Regist<MsgEntity>();//注册   返回消息的json
+    cppjson::Serializable::Regist<judgeEntiy>();//注册  评测的json
+    cppjson::Serializable::Regist<pointResult>();//注册  
+    cppjson::Serializable::Regist<solutionJson>();//注册
 
 
     Server.set_http_handler<GET>("/helloworld",[](request & req,response & res){
@@ -30,7 +33,8 @@ int main(){
 
     //Server.set_http_handler<POST>("/user/register",[](request & req,response & res){
     //});
-    User::regist(Server);
+    User::regist(Server);           // 用户相关的Routes
+    judgeRoutes::regist(Server);    // 评测相关的Routes
     
 
     Server.run();

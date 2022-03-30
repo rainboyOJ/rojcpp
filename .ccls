@@ -4,5 +4,8 @@ g++
 -I./third-party/netcore/core
 -I./third-party/netcore/lib
 -I./third-party/sqlpoolcpp/sqlconn
+-I./third-party/judgercpp
+-I./third-party/redisConnectPool
 -I./lib
 -I./jsonEntity
+-I./routes

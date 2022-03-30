@@ -49,6 +49,25 @@ struct __config__{
 
     //websocket
     static constexpr std::size_t ws_thpool_size = 4; // ws_manager 里的线程池大小,用来主动发送数据
+
+    //Redis的配置
+    //std::string_view ip,int port,std::string_view pass,int poolSize
+    static constexpr const char* Redis_ip       = "127.0.0.1";
+    static constexpr const int Redis_port       = 6379;
+    //static constexpr const char* Redis_password = nullptr;
+    static constexpr const int Redis_poolsize   = 4;
+};
+
+//judger_server的配置
+struct __CONFIG {
+    //基础题目路径
+    static constexpr std::string_view BASE_PROBLEM_PATH = "/home/rainboy/mycode/RainboyOJ/problems/problems";
+    static constexpr std::string_view BASE_WORK_PATH= "/tmp";
+
+    //judger 的位置
+    static constexpr std::string_view judger_bin = "/usr/bin/judger_core";
+    static constexpr std::size_t memory_base = 16*1024*1024; // 16mb
+    
 };
 
 

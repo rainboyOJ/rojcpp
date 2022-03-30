@@ -1,3 +1,6 @@
+/**
+ * @desc server发送给client的msg
+ */
 #pragma once
 
 #include "serializable.hpp"

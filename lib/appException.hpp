@@ -1,3 +1,6 @@
+/**
+ * @desc 异常
+ */
 #pragma once
 
 #include <exception>
