@@ -14,8 +14,8 @@ struct judgeEntiy {
     std::string language;   //语言
     std::string code;       //代码
     std::string pid;        //题目的编号
-    int memoryLimt; //ms
-    int timeLimt;   //mb
+    int memoryLimit; //ms
+    int timeLimit;   //mb
 
     config get_config()const 
     {
@@ -23,13 +23,13 @@ struct judgeEntiy {
         config.update({
             {"language", language},
             {"code", code},
-            {"memoryLimt", memoryLimt},
-            {"timeLimt", memoryLimt},
+            {"memoryLimit", memoryLimit},
+            {"timeLimit", timeLimit},
             {"pid", pid}
         });
         return config;
     }
     MessageSendJudge convertToMessageSendJudge(std::string_view key){
-        return  MessageSendJudge(key,code,language,pid,timeLimt,memoryLimt);
+        return  MessageSendJudge(key,code,language,pid,timeLimit,memoryLimit);
     }
 };
