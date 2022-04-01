@@ -53,5 +53,5 @@ add_executable(server ${SERVER_SRCS})
 
 
 # 添加库
-target_link_libraries(server netcore pthread ${MYSQL_LIBS})
+target_link_libraries(server netcore pthread ${MYSQL_LIBS} hiredis)
 target_compile_options(server PUBLIC ${MYSQL_CFLAGS})

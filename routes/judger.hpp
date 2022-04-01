@@ -6,6 +6,7 @@
 
 #include "__Entity__.hpp"
 #include "serializable.hpp"
+#include "redisLib.hpp"
 
 using namespace rojcpp;
 
@@ -83,11 +84,16 @@ void judgeRoutes::handleJudgeMsg(request &req, response &res){
         if( error.length() != 0) {
             std::cout << error << std::endl;
         }
-
     }
-    // 2. 创建一个redisCache
-    MsgEntity msgRet(solution_id);
 
+    // 2. 创建一个redisCache
+    {
+        std::ostringstream keyoss;
+        keyoss << solution_id << "_is_judging";
+        redisConnectPoolSingleton::GetPool().SETEX(keyoss.str(),1,60*30);
+    }
+    // 3. 发送评测给judgeServer
+    MsgEntity msgRet(solution_id);
     res.set_status_and_content(status_type::ok,
             msgRet.dumps()
             ,req_content_type::json);
