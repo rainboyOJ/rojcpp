@@ -41,8 +41,10 @@ public:
         //}
         //std::cout << "+++++++++++++++++++++" << std::endl;
         
-        bool exist = queryRes.size() > 0;
-        return std::make_tuple(exist,std::stoull(queryRes[0][0]),queryRes[0][1]);
+        if( queryRes.size() > 0 && queryRes[0].size() > 1)
+            return std::make_tuple(true,std::stoull(queryRes[0][0]),queryRes[0][1]);
+        else
+            return std::make_tuple(false,0,"");
     }
 };
 

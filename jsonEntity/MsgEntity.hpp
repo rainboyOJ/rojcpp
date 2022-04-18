@@ -7,6 +7,7 @@
 #include "sqlpool.hpp"
 #include "appException.hpp"
 #include "response.hpp"
+#include "DEF_MSG.hpp"
 
 using namespace cppjson;
 

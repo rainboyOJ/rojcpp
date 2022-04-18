@@ -136,7 +136,7 @@ static void regist(rojcpp::http_server_ & http_server){
     http_server.set_http_handler<POST>("/user/register",user_register);
     http_server.set_http_handler<POST>("/user/login",user_login);
     http_server.set_http_handler<GET>("/user/logout",user_logout);
-    http_server.set_http_handler<GET>("/user/ping",ping,UserAP_is_logined{});
+    http_server.set_http_handler<GET>("/user/ping",ping,UserAP_is_logined{true});
 }
 
 
