@@ -42,7 +42,7 @@ public:
         if( conn != nullptr)
             SQL_POOL::get_instance().ReleaseConnecion(conn);
     }
-    auto  get() { return conn;}
+    auto  get() const { return conn;}
     //操作sql连接
     SQLConnection* operator->(){
         return conn;

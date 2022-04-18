@@ -91,16 +91,19 @@ struct sqlUserTable {
     void Update();
 
     //查询
-    bool Select(SQLConnection * conn){
+    //@retval 返回id
+    uint64_t Select(SQLConnection * conn){
         std::ostringstream oss;
-        oss << "select count(*) from  users where password = '";
+        oss << "select id from  users where password = '";
         oss << password;
         oss << "' and username  = '";
         oss << username << "';";
         std::string error;
         auto res = conn->infoQuery(oss.str(), error);
-        std::cout << "===isValid" << std::endl;
-        return res[0] != "0";
+        if(res.size() > 0 && res[0].length() > 0){
+            return std::stoull(res[0]);
+        }
+        return 0;
     } 
 
     //验证

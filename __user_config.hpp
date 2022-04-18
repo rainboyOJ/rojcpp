@@ -56,6 +56,16 @@ struct __config__{
     static constexpr const int Redis_port       = 6379;
     //static constexpr const char* Redis_password = nullptr;
     static constexpr const int Redis_poolsize   = 4;
+
+
+    //judgeServer 连接相关
+    static constexpr const char * JUDGE_SERVER_IP  = "127.0.0.1";
+    static constexpr int JUDGE_SERVER_PORT         = 9000;
+    static constexpr int JUDGE_SERVER_CONNECT_SIZE = 4;
+
+    //加密的key,长度必须是16,128bit
+    static constexpr unsigned char ENCRYT_KEY[17] = "0123456789ROJCPP";
+
 };
 
 //judger_server的配置

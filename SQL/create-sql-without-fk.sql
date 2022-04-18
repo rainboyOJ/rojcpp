@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS `rojcpp`.`login_logs` (
   `created_at` TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
   `updated_at` TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
   `user_id` INT UNSIGNED NOT NULL DEFAULT 0,
+  `expireat` timestamp NOT NULL DEFAULT (current_timestamp() + interval 15 day),
   `ip` VARCHAR(40) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   INDEX `idx_user` (`user_id` ASC),
