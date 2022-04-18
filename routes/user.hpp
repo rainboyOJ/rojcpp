@@ -5,11 +5,13 @@
 #include "serializable.hpp"
 #include "../lib/rojcppUtils.hpp"
 #include "../CURD/login_logs.hpp"
+#include "user_ap.hpp"
 
 
 using namespace rojcpp;
 
 struct User {
+
 
 /**
  * method: POST
@@ -60,25 +62,11 @@ static void user_login(request & req,response & res){
     auto userJson = cppjson::Serializable::loads<userRegistJson>(
             std::string(req.body())
             );//注册
-    //1 检查是否登录
-    std::string_view session_id = req.get_cookie_value();
-    if( session_id.length() != 0 ){
-        auto exist = rojcpp::Cache::get().exists(std::string(session_id));
-        if( exist ) {
-            MsgEntity ok(-1,"already logined!");
-            res.set_status_and_content(status_type::ok,
-                    ok.dumps()
-                    ,req_content_type::json);
-            return;
-        }
-    }
-    std::cout << "user login 2 ======================" << std::endl;
 
-    //2. 检查 sql 里的 login_logs 是否登录
-    {
-        //创建对应的session
+    if( UserAP_is_logined().before(req, res) == true){
+        MsgEntityHelper::sendMesg(res, "already logined!");
+        return;
     }
-    //3. 检查 sql 是否存在这个用户
 
     SqlPoolRAII pool;
     sqlUserTable table(userJson);
