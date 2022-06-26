@@ -8,9 +8,11 @@
 #include "user_ap.hpp"
 
 
-using namespace rojcpp;
+
+using namespace netcore;
 
 struct User {
+
 
 
 /**
@@ -35,19 +37,11 @@ static void user_register(request & req,response & res){
         table.Insert(pool.get());
     }
     catch(std::exception & e){
-
-        MsgEntity err(-1,e.what());
-        std::cerr << " Exception : " << e.what() << "\n";
-        res.set_status_and_content(status_type::ok,
-                cppjson::Serializable::dumps(err)
-                ,req_content_type::json);
+        MsgEntityHelper::sendErrorMesg(res, e.what());
         return;
     }
 
-    MsgEntity ok(0,"ok");
-    res.set_status_and_content(status_type::ok,
-            cppjson::Serializable::dumps(ok)
-            ,req_content_type::json);
+    MsgEntityHelper::sendMesg(res, MSG::OK);
 }
 
 /**
@@ -63,8 +57,8 @@ static void user_login(request & req,response & res){
             std::string(req.body())
             );//注册
 
-    if( UserAP_is_logined().before(req, res) == true){
-        MsgEntityHelper::sendMesg(res, "already logined!");
+    if( UserAP_is_logined(false).before(req, res) == true){
+        MsgEntityHelper::sendMesg(res, MSG::ALREADY_LOGINED);
         return;
     }
 
@@ -84,8 +78,8 @@ static void user_login(request & req,response & res){
         }
         auto session_id = rojcppForServer::__encrypt(login_log_id) ;
         res.create_session(session_id);
-        rojcpp::Cache::get().set(session_id,std::to_string(user_id),__config__::session_expire);
-        MsgEntity ok(0,"login success");
+        netcore::Cache::get().set(session_id,std::to_string(user_id),__config__::session_expire);
+        MsgEntity ok(0,MSG::OK);
 
         std::cout << "user login 3 ======================" << std::endl;
         res.set_status_and_content(status_type::ok,
@@ -93,10 +87,7 @@ static void user_login(request & req,response & res){
                 ,req_content_type::json);
     }
     else{
-        MsgEntity ret(-1,"wrong password or username");
-        res.set_status_and_content(status_type::ok,
-                ret.dumps()
-                ,req_content_type::json);
+        MsgEntityHelper::sendErrorMesg(res, MSG::WRONG_PASSWORD_OR_USERNAME);
     }
 }
 
@@ -132,7 +123,7 @@ static void ping(request &req,response & res){
 }
 
 
-static void regist(rojcpp::http_server_ & http_server){
+static void regist(netcore::http_server & http_server){
     http_server.set_http_handler<POST>("/user/register",user_register);
     http_server.set_http_handler<POST>("/user/login",user_login);
     http_server.set_http_handler<GET>("/user/logout",user_logout);

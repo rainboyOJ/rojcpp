@@ -16,11 +16,11 @@ struct UserAP_is_logined {
     UserAP_is_logined() =default;
     UserAP_is_logined(bool b) :bwrite_on_fail{b} {}
 
-    bool before(rojcpp::request & req, rojcpp::response & res){
-        using namespace rojcpp;
+    bool before(netcore::request & req, netcore::response & res){
+        using namespace netcore;
         std::string_view session_id = req.get_cookie_value();
         if( session_id.length() != 0 ){
-            auto exist = rojcpp::Cache::get().exists(std::string(session_id));
+            auto exist = netcore::Cache::get().exists(std::string(session_id));
             if( exist )
                 return true;
         }
@@ -36,14 +36,14 @@ struct UserAP_is_logined {
             auto [exist,expire_duration,user_id] 
                 = login_log_table.exist_and_NoExpired(log_id);
             //重新缓存起来
-            rojcpp::Cache::get().set(session_id_str,std::move(user_id),expire_duration);
+            netcore::Cache::get().set(session_id_str,std::move(user_id),expire_duration);
             return true;
         }
 
         if (bwrite_on_fail) 
-            MsgEntityHelper::sendMesg(res, MSG::NEED_LOGIN);
+            MsgEntityHelper::sendErrorMesg(res, MSG::NEED_LOGIN);
         return false;
     }
 
-    bool bwrite_on_fail{false};
+    bool bwrite_on_fail{true};
 };

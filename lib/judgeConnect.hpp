@@ -13,7 +13,7 @@
 
 #include "websocket_manager.h"
 
-using rojcpp::Cache;
+using netcore::Cache;
 
 
 //过期时间
@@ -67,21 +67,19 @@ std::size_t connect_size,std::string_view judge_server_ip,int port
                             //std::get<0>(pointInfo), //index
                             //pointJson
                             //);
-                    //redisConnectPoolSingleton::GetPool().DEL(JKFC.get_is_judging_key().c_str());
-                    //redisConnectPoolSingleton::GetPool().DEL(JKFC.get_point_size_key().c_str());
-                    //redisConnectPoolSingleton::GetPool().DEL(JKFC.get_results_array_key().c_str());
-                    Cache::get().del(JKFC.get_is_judging_key().c_str());
-                    Cache::get().del(JKFC.get_point_size_key().c_str());
-                    Cache::get().del(JKFC.get_results_array_key().c_str());
+                    //新的过期时间
+                    Cache::get().new_expire(JKFC.get_is_judging_key().c_str(),30);
+                    Cache::get().new_expire(JKFC.get_point_size_key().c_str(),30);
+                    Cache::get().new_expire(JKFC.get_results_array_key().c_str(),30);
 
-                    // TODO 最后一次发送
-                    // TODO 清空 web_socket fd
+                    // 最后一次发送
+                    // 清空 web_socket fd
                     
-                    // 关闭web_socket
-                    //rojcpp::WS_manager::get_instance().close_by_key(judgeKey);
-                    //rojcpp::WS_manager::get_instance().close_by_key(judgeKey);
-                    const MsgEntity close_msg("finish judge");
-                    rojcpp::WS_manager::get_instance().send_msg_by_id( judgeKey, close_msg.dumps(),true);
+                    const MsgEntity close_msg(MSG::FINISH_JUDGE);
+                    //rojcpp::WS_manager::get_instance().send_msg_by_id( judgeKey, close_msg.dumps(),true);
+                    //TODO 发送评测的
+
+                    //把结果放入到sql里
                     return;
                 }
 
@@ -141,7 +139,7 @@ std::size_t connect_size,std::string_view judge_server_ip,int port
                 std::ostringstream single_result_msg;
                 single_result_msg << R"({"point":)" << std::get<0>(pointInfo) << ",";
                 single_result_msg << R"("result":)" << pointJson << "}";
-                rojcpp::WS_manager::get_instance().send_msg_by_id( judgeKey,single_result_msg.str() );
+                //rojcpp::WS_manager::get_instance().send_msg_by_id( judgeKey,single_result_msg.str() );
 
             });
     }

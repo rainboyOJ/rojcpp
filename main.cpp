@@ -5,8 +5,12 @@
 #include "__Entity__.hpp"
 #include "__Routes__.hpp"
 
-using namespace rojcpp;
-rojcpp::http_server_ Server;
+
+using namespace netcore;
+
+__START_LOG__
+
+netcore::http_server OJServer{1,8099};
 
 
 
@@ -27,16 +31,16 @@ int main(){
     cppjson::Serializable::Regist<solutionJson>();//注册
 
 
-    Server.set_http_handler<GET>("/helloworld",[](request & req,response & res){
-            res.set_status_and_content(status_type::ok,"hello world,this rojcpp Server",req_content_type::string);
+    OJServer.set_http_handler<GET>("/helloworld",[](request & req,response & res){
+            res.set_status_and_content(status_type::ok,"hello world,this rojcpp OJServer",req_content_type::string);
     });
 
-    //Server.set_http_handler<POST>("/user/register",[](request & req,response & res){
+    //OJServer.set_http_handler<POST>("/user/register",[](request & req,response & res){
     //});
-    User::regist(Server);           // 用户相关的Routes
-    judgeRoutes::regist(Server);    // 评测相关的Routes
+    User::regist(OJServer);           // 用户相关的Routes
+    judgeRoutes::regist(OJServer);    // 评测相关的Routes
     
 
-    Server.run();
+    OJServer.run();
     return 0;
 }

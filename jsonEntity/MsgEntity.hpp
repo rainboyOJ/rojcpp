@@ -43,17 +43,17 @@ struct MsgEntity {
 struct MsgEntityHelper {
 
     //@desc 正常的信息
-    static inline void sendMesg(rojcpp::response & res , std::string_view msg) {
+    static inline void sendMesg(netcore::response & res , std::string_view msg) {
         res.set_status_and_content( 
-                rojcpp::status_type::ok
+                netcore::status_type::ok
                 , MsgEntity(0,msg).dumps()
-                , rojcpp::req_content_type::json);
+                , netcore::req_content_type::json);
     }
     //@desc 错误的信息
-    static inline void sendErrorMesg(rojcpp::response & res , std::string_view msg){
+    static inline void sendErrorMesg(netcore::response & res , std::string_view msg){
         res.set_status_and_content( 
-                rojcpp::status_type::ok
+                netcore::status_type::ok
                 , MsgEntity(-1,msg).dumps()
-                , rojcpp::req_content_type::json);
+                , netcore::req_content_type::json);
     }
 };
