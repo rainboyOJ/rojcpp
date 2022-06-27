@@ -18,6 +18,9 @@ constexpr std::size_t operator"" _MB ( unsigned long long const x ){
 }
 
 struct __config__{
+
+    static constexpr int  work_thread = 1; 
+
     static constexpr int  session_expire = 15*24*60*70; // 15 days
     static constexpr auto static_dir = "www"sv;
     static constexpr auto upload_dir = "upload"sv;

@@ -9,6 +9,9 @@ set(CMAKE_CXX_FLAGS "-std=c++20")
 
 # 设置宏
 add_definitions(-D DEBUG)
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_definitions(-D__NETCORE__DEBUG__)
+endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
 
 #aux_source_directory(. DIR_SRCS)
 set(SERVER_SRCS main.cpp third-party/netcore/lib/easyloggingpp/easylogging++.cc)

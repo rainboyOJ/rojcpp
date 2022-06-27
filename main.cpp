@@ -10,12 +10,12 @@ using namespace netcore;
 
 __START_LOG__
 
-netcore::http_server OJServer{1,8099};
-
-
+netcore::http_server OJServer{__config__::work_thread,8099};
 
 int main(){
-    // 执行一次
+    LOG(ERROR) << "Server start";
+
+    // 执行一次,初始化SQL连接池
     SQL_POOL::get_instance();
     //std::cout << "create sqlpool succ" << std::endl;
     //auto conn  = pool.GetConnecion();
@@ -42,5 +42,6 @@ int main(){
     
 
     OJServer.run();
+    
     return 0;
 }
