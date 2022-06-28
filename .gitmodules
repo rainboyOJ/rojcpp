@@ -4,9 +4,6 @@
 [submodule "third-party/cppjson"]
 	path = third-party/cppjson
 	url = https://github.com/rainboyOJ/cppjson
-[submodule "third-party/sqlpoolcpp"]
-	path = third-party/sqlpoolcpp
-	url = https://github.com/rainboyOJ/sqlpoolcpp
 [submodule "third-party/judgercpp"]
 	path = third-party/judgercpp
 	url = https://github.com/rainboyOJ/judgercpp
