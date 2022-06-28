@@ -13,3 +13,9 @@
 [submodule "third-party/redisConnectPool"]
 	path = third-party/redisConnectPool
 	url = https://github.com/rainboyOJ/redisConnectPool
+[submodule "third-party/modern_cpp"]
+	path = third-party/modern_cpp
+	url = https://github.com/rainboyOJ/modern_cppdb
+[submodule "third-party/modern_cppdb"]
+	path = third-party/modern_cppdb
+	url = https://github.com/rainboyOJ/modern_cppdb
