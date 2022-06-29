@@ -1,9 +1,9 @@
 g++
--std=c++17
+-std=c++20
+-I./third-party/
 -I./third-party/cppjson/src
 -I./third-party/netcore/core
 -I./third-party/netcore/lib
--I./third-party/sqlpoolcpp/sqlconn
 -I./third-party/judgercpp
 -I./third-party/redisConnectPool
 -I./lib
