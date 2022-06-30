@@ -4,7 +4,6 @@
 #pragma once
 
 #include "serializable.hpp"
-#include "sqlpool.hpp"
 #include "appException.hpp"
 #include "response.hpp"
 #include "DEF_MSG.hpp"

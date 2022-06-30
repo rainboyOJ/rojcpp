@@ -1,9 +1,13 @@
 #include "http_server.hpp"
 #include "websocket_manager.h"
-#include "sqlpool.hpp"
+#include "third-party/modern_cppdb/include/cppdb.hpp"
 
 #include "__Entity__.hpp"
-#include "__Routes__.hpp"
+
+
+// ----- routes -----
+#include "./routes/user.hpp"
+//#include "./routes/judger.hpp"
 
 
 using namespace netcore;
@@ -15,8 +19,11 @@ netcore::http_server OJServer{__config__::work_thread,8099};
 int main(){
     LOG(ERROR) << "Server start";
 
+    //数据库连接池
     // 执行一次,初始化SQL连接池
-    SQL_POOL::get_instance();
+    const std::string connection_info_ = std::string(__config__::connection_info_);
+    cppdb::pool_manager::init(connection_info_);
+    
     //std::cout << "create sqlpool succ" << std::endl;
     //auto conn  = pool.GetConnecion();
     //std::string error{};
@@ -38,7 +45,7 @@ int main(){
     //OJServer.set_http_handler<POST>("/user/register",[](request & req,response & res){
     //});
     User::regist(OJServer);           // 用户相关的Routes
-    judgeRoutes::regist(OJServer);    // 评测相关的Routes
+    //judgeRoutes::regist(OJServer);    // 评测相关的Routes
     
 
     OJServer.run();

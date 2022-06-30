@@ -7,7 +7,6 @@
 #include <exception>
 
 #include "serializable.hpp"
-#include "sqlpool.hpp"
 #include "appException.hpp"
 
 using namespace cppjson;
@@ -47,6 +46,7 @@ struct userRegistJson {
  * status
  * remember_token
  */
+/*
 struct sqlUserTable {
     std::string username;
     std::string nickname;
@@ -125,4 +125,5 @@ struct sqlUserTable {
             throw sqlError("email or username had exited");
     }
 };
+*/
 

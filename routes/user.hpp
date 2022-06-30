@@ -5,6 +5,7 @@
 #include "serializable.hpp"
 #include "../lib/rojcppUtils.hpp"
 #include "../CURD/login_logs.hpp"
+#include "../CURD/user_table.hpp"
 #include "user_ap.hpp"
 
 
@@ -21,20 +22,26 @@ struct User {
  * 注册
  */
 static void user_register(request & req,response & res){
-    auto userJson = cppjson::Serializable::loads<userRegistJson>(
+    LOG(DEBUG) << __PRETTY_FUNCTION__;
+    
+    LOG(DEBUG) << "body : " <<  req.body();
+    userRegistJson userJson = cppjson::Serializable::loads<userRegistJson>(
             std::string(req.body())
             );//注册
     //输出
-    SqlPoolRAII pool;
     //std::cout << "pool id "  << pool->getPoolId() << std::endl;
     //std::string error;
     //auto query_res = pool->infoQuery("show tables", error);
     //for (const auto& e : query_res) {
     //std::cout << e << std::endl;
     //}
-    sqlUserTable table(userJson);
     try {
-        table.Insert(pool.get());
+        CURD::UserTable::add(
+                userJson.username,
+                userJson.nickname,
+                userJson.password,
+                userJson.email,
+                userJson.school);
     }
     catch(std::exception & e){
         MsgEntityHelper::sendErrorMesg(res, e.what());
@@ -51,7 +58,6 @@ static void user_register(request & req,response & res){
  * 登录
  */
 static void user_login(request & req,response & res){
-    std::cout << "user login ======================" << std::endl;
     //TODO try cache json load error
     auto userJson = cppjson::Serializable::loads<userRegistJson>(
             std::string(req.body())
@@ -62,22 +68,21 @@ static void user_login(request & req,response & res){
         return;
     }
 
-    SqlPoolRAII pool;
-    sqlUserTable table(userJson);
-    auto user_id = table.Select(pool.get());
-    if( user_id != 0 ){
+    try {
+        cppdb::query<"select id from users where username = '?' and password = '?';", unsigned long long> q;
+
+        unsigned long long user_id = q << userJson.username << userJson.password << cppdb::exec;
 
         //创建 sql login_logs
         uint64_t login_log_id= 0;
         {
-            CURD::login_logs login_table;
-            login_log_id = login_table.create(user_id, "unknown");  //TODO req should has ip
+            login_log_id = CURD::login_logs::add(user_id,"unknown");
             std::cout << "========================================" << std::endl;
             std::cout << "uuid " << login_log_id << std::endl;
             std::cout << "========================================" << std::endl;
         }
         auto session_id = rojcppForServer::__encrypt(login_log_id) ;
-        res.create_session(session_id);
+        res.create_session(session_id); // ?
         netcore::Cache::get().set(session_id,std::to_string(user_id),__config__::session_expire);
         MsgEntity ok(0,MSG::OK);
 
@@ -86,9 +91,10 @@ static void user_login(request & req,response & res){
                 ok.dumps()
                 ,req_content_type::json);
     }
-    else{
+    catch(cppdb::cppdb_no_result & e) {
         MsgEntityHelper::sendErrorMesg(res, MSG::WRONG_PASSWORD_OR_USERNAME);
     }
+
 }
 
 /**

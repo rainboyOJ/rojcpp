@@ -30,11 +30,13 @@ execute_process(COMMAND mysql_config --cflags
 execute_process(COMMAND mysql_config --libs
     OUTPUT_VARIABLE MYSQL_LIBS OUTPUT_STRIP_TRAILING_WHITESPACE)
 
+include_directories(./third-party/)
 include_directories(./third-party/netcore/include/netcore)
 include_directories(./third-party/netcore/lib)
 include_directories(./third-party/cppjson/src)
 include_directories(./third-party/sqlpoolcpp/sqlconn)
 include_directories(./third-party/judgercpp/)
+include_directories(./third-party/modern_cppdb/include)
 include_directories(./lib)
 include_directories(./jsonEntity)
 include_directories(./routes)

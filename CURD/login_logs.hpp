@@ -2,11 +2,53 @@
  * @desc login_logs 这个表的相关操作
  */
 #pragma once
-#include "curd_base.hpp"
+
+#include "modern_cppdb.hpp"
 
 namespace CURD {
 
 
+struct login_logs {
+    
+    //创建一条新的登录记录
+    static
+    unsigned long long add(
+            unsigned long long user_id,
+            std::string_view ip = ""
+            ) {
+        cppdb::query<"insert into login_logs (user_id,ip) values (?,'?') RETURNING id;", unsigned long long> q;
+        return q<< user_id << ip << cppdb::exec;
+    }
+
+    //检查登录是否过期
+    std::tuple<bool,unsigned long long,unsigned long long>
+        exist_and_NoExpired(unsigned long long log_id)
+    {
+        using one_row = 
+            cppdb::row_type<
+                cppdb::column<"left_time", unsigned long long>,
+                cppdb::column<"user_id", unsigned long long>
+            >;
+
+        cppdb::query<"select unix_timestamp (expireat) - unix_timestamp (),user_id from login_logs ll where ll.expireat > now() and ll.id = ?;", one_row> q;
+
+        unsigned long long time_;
+
+        try {
+            one_row row =  q << log_id << cppdb::exec;
+            return std::make_tuple(true,
+                    cppdb::get<"left_time",one_row>(row),
+                    cppdb::get<"user_id",one_row>(row)
+                    );
+        }
+        catch(cppdb::cppdb_no_result) { //TODO 细分错误
+            return std::make_tuple(false,0,0);
+        }
+
+    }
+};
+
+/*
 class login_logs : public curd_base {
 
 public:
@@ -47,7 +89,7 @@ public:
             return std::make_tuple(false,0,"");
     }
 };
-
+*/
 
 } // end namespace CURD
 

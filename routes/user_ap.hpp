@@ -36,7 +36,7 @@ struct UserAP_is_logined {
             auto [exist,expire_duration,user_id] 
                 = login_log_table.exist_and_NoExpired(log_id);
             //重新缓存起来
-            netcore::Cache::get().set(session_id_str,std::move(user_id),expire_duration);
+            netcore::Cache::get().set(session_id_str,std::to_string(user_id),expire_duration);
             return true;
         }
 

@@ -4,7 +4,6 @@
 #pragma once
 
 #include "serializable.hpp"
-#include "sqlpool.hpp"
 #include "appException.hpp"
 //#include "third-party/judgercpp/judger.h"
 #include "judger.h"

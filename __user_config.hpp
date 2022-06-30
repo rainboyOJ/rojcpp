@@ -19,6 +19,8 @@ constexpr std::size_t operator"" _MB ( unsigned long long const x ){
 
 struct __config__{
 
+    static constexpr std::string_view connection_info_ ="mysql:host=127.0.0.1;port=3306;user=root;password=root;database=rojcpp;";
+
     static constexpr int  work_thread = 1; 
 
     static constexpr int  session_expire = 15*24*60*70; // 15 days
