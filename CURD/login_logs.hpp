@@ -21,6 +21,7 @@ struct login_logs {
     }
 
     //检查登录是否过期
+    static
     std::tuple<bool,unsigned long long,unsigned long long>
         exist_and_NoExpired(unsigned long long log_id)
     {

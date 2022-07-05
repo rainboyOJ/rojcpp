@@ -28,13 +28,7 @@ static void user_register(request & req,response & res){
     userRegistJson userJson = cppjson::Serializable::loads<userRegistJson>(
             std::string(req.body())
             );//注册
-    //输出
-    //std::cout << "pool id "  << pool->getPoolId() << std::endl;
-    //std::string error;
-    //auto query_res = pool->infoQuery("show tables", error);
-    //for (const auto& e : query_res) {
-    //std::cout << e << std::endl;
-    //}
+
     try {
         CURD::UserTable::add(
                 userJson.username,
@@ -81,8 +75,12 @@ static void user_login(request & req,response & res){
             std::cout << "uuid " << login_log_id << std::endl;
             std::cout << "========================================" << std::endl;
         }
+        // session_id  就是登录后的记录id 加密后的 str
         auto session_id = rojcppForServer::__encrypt(login_log_id) ;
         res.create_session(session_id); // ?
+
+
+        // Cache 存的是 session_id 对应的 user_id
         netcore::Cache::get().set(session_id,std::to_string(user_id),__config__::session_expire);
         MsgEntity ok(0,MSG::OK);
 

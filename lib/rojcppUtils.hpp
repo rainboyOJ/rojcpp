@@ -132,6 +132,10 @@ struct judgeCacheKeyFactory {
         :baseName{key}
     {}
 
+    explicit judgeCacheKeyFactory(unsigned long long key)
+        :baseName{std::to_string(key)}
+    {}
+
     std::string get_point_size_key(){
         return append_key_suffix("_point_size");
     }

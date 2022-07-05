@@ -5,9 +5,13 @@
 #include "__Entity__.hpp"
 
 
+
+
 // ----- routes -----
 #include "./routes/user.hpp"
-//#include "./routes/judger.hpp"
+#include "./routes/judger.hpp"
+//
+#include "judgeConnect.hpp"
 
 
 using namespace netcore;
@@ -18,6 +22,9 @@ netcore::http_server OJServer{__config__::work_thread,8099};
 
 int main(){
     LOG(ERROR) << "Server start";
+
+    //TODO 应该检查是否连接
+    judgeConnectSingleton::Get();
 
     //数据库连接池
     // 执行一次,初始化SQL连接池
@@ -45,10 +52,11 @@ int main(){
     //OJServer.set_http_handler<POST>("/user/register",[](request & req,response & res){
     //});
     User::regist(OJServer);           // 用户相关的Routes
-    //judgeRoutes::regist(OJServer);    // 评测相关的Routes
+    judgeRoutes::regist(OJServer);    // 评测相关的Routes
     
 
     OJServer.run();
+    std::cout << "======================== main end " << std::endl;
     
     return 0;
 }

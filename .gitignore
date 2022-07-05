@@ -41,3 +41,4 @@ www/
 build/
 1.cpp
 tests/cookie
+*.bkp

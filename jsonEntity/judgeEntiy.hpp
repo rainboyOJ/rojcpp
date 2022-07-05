@@ -1,5 +1,5 @@
 /**
- * @发送过来的judge的josn 信息
+ * @发送过来的judge的json 信息
  */
 #pragma once
 

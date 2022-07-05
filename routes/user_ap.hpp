@@ -20,9 +20,13 @@ struct UserAP_is_logined {
         using namespace netcore;
         std::string_view session_id = req.get_cookie_value();
         if( session_id.length() != 0 ){
-            auto exist = netcore::Cache::get().exists(std::string(session_id));
-            if( exist )
+            //auto exist = netcore::Cache::get().exists(std::string(session_id));
+            auto [exists,val] = netcore::Cache::get().get(std::string(session_id));
+            //设定req 里的 req.user_id
+            if( exists ) {
+                req.set_user_id(std::stoull(val));
                 return true;
+            }
         }
 
         //2. 检查 sql 里的 login_logs 是否登录
@@ -30,14 +34,16 @@ struct UserAP_is_logined {
         if(session_id.length() != 0)
         {
             //TODO try cache
-            const std::string session_id_str = std::string(std::string(session_id));
+            const std::string session_id_str = std::string(session_id);
             uint64_t log_id =  rojcppForServer::__decrypt(session_id_str);
-            CURD::login_logs login_log_table;
             auto [exist,expire_duration,user_id] 
-                = login_log_table.exist_and_NoExpired(log_id);
-            //重新缓存起来
-            netcore::Cache::get().set(session_id_str,std::to_string(user_id),expire_duration);
-            return true;
+                = CURD::login_logs::exist_and_NoExpired(log_id);
+            if( exist ) {
+                //重新缓存起来
+                netcore::Cache::get().set(session_id_str,std::to_string(user_id),expire_duration);
+                req.set_user_id(user_id);
+                return true;
+            }
         }
 
         if (bwrite_on_fail) 
